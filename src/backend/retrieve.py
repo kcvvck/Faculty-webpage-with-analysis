@@ -1,6 +1,6 @@
-import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
+import dblp
 import validators
 
 from crawl import Crawl
@@ -8,54 +8,58 @@ from faculty import Faculty
 from facultymember import FacultyMember
 from utils import *
 
+'''
+TODO do the next page by changing the webpage
+TODO get number of citations
+TODO clean up code
+TODO add logging for errors
+TODO pytest check
+'''
 
 @dataclass
 class Retrieve:
     url: str
     tag: str
     class_: str
+    faculty: Faculty = field(default_factory=Faculty)
     
-    def __init__(self, url, tag, class_) -> None:
-        if not validators.url(url):
+    def __post_init__(self) -> None:
+        if not validators.url(self.url):
             raise Exception("Invalid URL.")
-        self.url = url
-        self.tag = tag
-        self.class_ = class_
         
     def retrieve_info(self):
-        faculty = Faculty()
+        count = 0
         all_info = Crawl(self.url).get_info()
         faculty_list = all_info.find("table", attrs={"class": "table table-hover"})
         faculty_data = faculty_list.find_all("tr")
         # skip the headings, we will add that later
         for data in faculty_data[1:]:
+            name = data.find('a').text
+            email = data.find_all("td")[2].text
+            if name in AKA.keys():  # some names are not the same in dblp for some reason
+                name = AKA[name]
+            try:
+                dblp_: str = dblp.search(name)[0].homepages[0]
+            except IndexError as e:
+                print(name)
+                break;
+            dblp_site = dblp_.replace("homepages", "https://dblp.org/pid") + ".html"
             dr_site = "https://dr.ntu.edu.sg" + data.find('a')['href']
+            # ----
             dr_info = Crawl(dr_site).get_info()
             personal_web = dr_info.find_all("div", id=WEBSITE)
-            faculty.append(FacultyMember(
-                name=data.find('a').text,
-                email=data.find_all("td")[2].text,
+            # -----
+            self.faculty.append(FacultyMember(
+                name=name,
+                email=email,
                 dr_ntu=dr_site,
                 website=(personal_web[0].find('a')['href'] if personal_web[0].find('a') else None),
-                dblp=None,
+                dblp=dblp_site,
                 citations=None
                                         ))
-        return faculty
-            # except:
-        #         TODO faculty member does not have any personal websites!
-        #         pass
-            # else:
-            #     print(personal_web[0])
-            #     print(f"{data.find('a').text} does not have a personal website!")
-        #             faculty_info[faculty.find('a').text] = faculty.find('a')['href']
-        #         else:  # for if faculty does not have a link
-        #             # TODO: note thee faculty member down
-        #             logging.info(f"{faculty} does not have a link.")
-        # except AttributeError as e:
-        #     logging.error(f"Exception is {e.args}. Could not find tag {self.tag} with class {self.class_}")
             
 
 f = Retrieve(URL, TAG, CLASS)
-fac = f.retrieve_info()
-dat = fac.to_dataframe()
+f.retrieve_info()
+dat = f.faculty.to_dataframe()
 print(dat)
