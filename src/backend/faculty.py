@@ -3,7 +3,7 @@ from typing import List
 
 import pandas as pd
 
-from facultymember import FacultyMember
+from .facultymember import FacultyMember
 
 
 @dataclass
