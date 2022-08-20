@@ -5,3 +5,6 @@ pip install pandas
 pip install lxml
 pip install git+https://github.com/scholrly/dblp-python # NOTE in line 21 of __init__.py file, remove ", key"
 pip install regex
+pip install scholarly
+pip install tqdm
+
