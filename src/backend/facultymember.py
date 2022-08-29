@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass
@@ -9,7 +8,6 @@ class FacultyMember:
     dr_ntu: str
     website: str
     dblp: str
-    # citations: Dict[str, int]
     citations: str
 
     def to_dict(self):
@@ -19,6 +17,5 @@ class FacultyMember:
             'dr_ntu': self.dr_ntu,
             'website': self.website,
             'dblp': self.dblp,
-            # 'citations': sum((self.citations).values())
             'citations': self.citations
         }
