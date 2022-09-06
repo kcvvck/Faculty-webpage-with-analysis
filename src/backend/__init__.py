@@ -1,3 +1,2 @@
-from .faculty import *
-from .facultymember import *
+from .load import db
 from .retrieve import *

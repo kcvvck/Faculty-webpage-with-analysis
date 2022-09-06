@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+    <div id="profile-details">
+        <h1>{{ faculty.name }}</h1>
+    </div>
+    <div class="biography">
+        {{ (faculty.biography) | wordwrap(38) }}
+    </div>
+{% endblock %}

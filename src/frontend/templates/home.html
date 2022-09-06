@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% set active_page = "home" %}
+{% block html_head %}
+<style type="text/css">
+  table, th, td {
+    width: 100%;
+    border: 1px solid;
+    }
+</style>
+{% endblock %}
+{% block content %}
+  <h1>List of all NTU SCSE faculty members</h1>
+  <input type="text" placeholder="Search..">
+    <table class="table faculty-list">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for member, link in faculty_list %}
+        <tr>
+          <td><a href={{ link }}>{{ member['name'] }}</a></td>
+          <td>{{ member['email'] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+{% endblock %}
