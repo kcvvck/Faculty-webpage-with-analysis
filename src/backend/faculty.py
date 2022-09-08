@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+import logging
 from typing import List
 
 import pandas as pd
@@ -23,8 +24,13 @@ class Faculty:
 
     def get_member(self, name: str):
         # need to check for exception
-        return [faculty for faculty in self.faculty_list
-                if faculty.name == name][0]
+        try:
+            member = [faculty for faculty in self.faculty_list
+                      if faculty.name == name][0]
+        except Exception as e:
+            logging.error(f"{name} not in faculty list")
+            return None
+        return member
 
     def to_dataframe(self):
         return pd.DataFrame.from_records([

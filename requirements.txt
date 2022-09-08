@@ -8,3 +8,5 @@ pip install regex
 pip install scholarly
 pip install tqdm
 pip install Flask
+pip install plotly
+pip install chart-studio

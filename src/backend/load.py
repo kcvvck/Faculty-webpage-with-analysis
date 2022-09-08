@@ -2,8 +2,8 @@ import json
 import os
 
 from config import config
-from frontend.faculty import Faculty
-from frontend.facultymember import FacultyMember
+from backend.faculty import Faculty
+from backend.facultymember import FacultyMember
 
 
 def load_in(dir: str) -> Faculty:

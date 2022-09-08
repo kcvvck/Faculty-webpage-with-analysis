@@ -9,4 +9,6 @@ AKA = {"Jagath Chandana Rajapakse": "Jagath C. Rajapakse",
        "Ke Yiping, Kelly": "Yiping Ke",
        "Lana Obraztsova": "Svetlana Obraztsova"
        }
-DATA_FILE = str(Path().absolute()) + "/src/backend/data"
+ROOT = str(Path().absolute())
+DATA_FILE = ROOT + "/src/backend/data"
+FCITES_GRAPH = ROOT + '/src/frontend/templates/citesperyear.html'
