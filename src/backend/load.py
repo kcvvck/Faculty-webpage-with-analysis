@@ -27,16 +27,16 @@ def load_in(dir: str) -> Faculty:
                            ]
             all_members.append(
                 FacultyMember(name=info["name"],
-                              url_picture=info["url_picture"],
+                              urlpicture=info["url_picture"],
                               email=info["ntu_email"],
-                              dr_ntu=info["dr_ntu"],
+                              drntu=info["dr_ntu"],
                               website=info["website"],
                               dblp=info["dblp"],
                               citedby=info["citedby"],
                               biography=info["biography"],
                               interests=info["interests"],
                               grants=info["grants"],
-                              cites_per_year=info["cites_per_year"],
+                              citesperyear=info["cites_per_year"],
                               coauthors=coauthors,
                               publications=publications
                               ))
