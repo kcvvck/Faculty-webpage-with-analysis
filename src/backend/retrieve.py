@@ -77,7 +77,8 @@ def get_dr_ntu(url):
                 if personal_web[0].find('a') else None
                     )
             full_info['dblp'] = dblp_site
-            full_info['grants'] = list(filter(lambda item: item[0].isalpha(), grants))
+            full_info['grants'] = list(filter(lambda item: item[0].isalpha(),
+                                              grants))
             full_info['biography'] = biography[0].text
         except StopIteration as e:
             full_info = {
