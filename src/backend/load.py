@@ -43,4 +43,4 @@ def load_in(dir: str) -> Faculty:
     return all_members
 
 
-db = load_in(config.DATA_FILE)
+db: Faculty = load_in(config.DATA_FILE)

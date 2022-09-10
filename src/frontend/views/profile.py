@@ -12,9 +12,12 @@ profile_bp = Blueprint('profile_bp', __name__, url_prefix='/profile')
 @profile_bp.route('/<name>')  # name has + for whitespace
 def profile(name):
     rname = name.replace("+", " ")
+    print(f"trying to find {rname}")
     f = db.get_member(rname)
+    print(f"WE GOT {f.name}")
     plot_cites(f)
-    if not f:
+    if f is None:
+        print("CANNOT FIND")
         return render_template("404.html")
     return render_template("profile.html", faculty=f)
 

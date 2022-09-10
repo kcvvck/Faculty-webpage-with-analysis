@@ -11,4 +11,6 @@ AKA = {"Jagath Chandana Rajapakse": "Jagath C. Rajapakse",
        }
 ROOT = str(Path().absolute())
 DATA_FILE = ROOT + "/src/backend/data"
-FCITES_GRAPH = ROOT + '/src/frontend/templates/citesperyear.html'
+FCITES_PATH = ROOT + '/src/frontend/templates/citesperyear.html'
+TOT_FCITES_PATH = ROOT + '/src/frontend/templates/summary_cites.html'
+NET_PATH = ROOT + '/src/frontend/templates/summary_network.html'

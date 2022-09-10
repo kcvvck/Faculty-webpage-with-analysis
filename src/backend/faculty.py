@@ -13,17 +13,16 @@ class Faculty:
 
     def append(self, faculty_member: FacultyMember):
         self.faculty_list.append(faculty_member)
-    # def p(self):
-    #     for i in self.faculty_list:
-    #         print(i.name)
 
     def links(self) -> List[str]:
         return ["http://127.0.0.1:5000/profile/" +
                 f"{faculty.name.replace(' ', '+')}"
                 for faculty in self.faculty_list]
 
-    def get_member(self, name: str):
+    def get_member(self, name: str) -> FacultyMember:
         # need to check for exception
+        l = [faculty.name for faculty in self.faculty_list]
+        print(l)
         try:
             member = [faculty for faculty in self.faculty_list
                       if faculty.name == name][0]
@@ -31,6 +30,15 @@ class Faculty:
             logging.error(f"{name} not in faculty list")
             return None
         return member
+
+    def filter_authors(self) -> None:
+        members = [faculty.name for faculty in self.faculty_list]
+        remove = []
+        for f in self.faculty_list:
+            for coauthor in f.coauthors:
+                if coauthor not in members:
+                    remove.append(coauthor)
+            f.coauthors = [x for x in f.coauthors if x not in remove]
 
     def to_dataframe(self):
         return pd.DataFrame.from_records([

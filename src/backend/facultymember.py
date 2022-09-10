@@ -3,7 +3,7 @@ from typing import Dict, List
 
 
 @dataclass
-class FacultyMember:
+class FacultyMember(dict):
     name: str
     urlpicture: str
     email: str
