@@ -15,3 +15,49 @@ FCITES_PATH = ROOT + '/src/frontend/templates/citesperyear.html'
 TOT_FCITES_PATH = ROOT + '/src/frontend/templates/summary_cites.html'
 NET_PATH = ROOT + '/src/frontend/templates/summary_network.html'
 SCATTER_PATH = ROOT + '/src/frontend/templates/summary_scatter.html'
+BAR_CONFIG = {'title': "Cites per year",
+              'xaxis_title': "Year",
+              'yaxis_title': "No. of citations"}
+EDGE_CONFIG = {'x': [], 'y': [],
+               'line': dict(width=0.5, color='#888'),
+               'hoverinfo': 'none', 'mode': 'lines'}
+NODE_CONFIG = {'x': [],
+               'y': [],
+               'text': [],
+               'mode': 'markers',
+               'hoverinfo': 'text',
+               'marker': dict(
+                     showscale=True,
+                     colorscale='Bluered',
+                     reversescale=True,
+                     color=[],
+                     size=15,
+                     colorbar=dict(
+                            thickness=10,
+                            title='Connection strength',
+                            xanchor='left',
+                            titleside='right'
+                     ),
+                     line=dict(width=0))}
+WEIGHT_CONFIG = {'mode': 'markers',
+                 'marker_size': 0.5,
+                 'textposition': 'top center',
+                 'hoverinfo': 'text'}
+NETWORK_CONFIG = {'title': 'NTU SCSE Research Network',
+                  'titlefont': dict(size=16),
+                  'showlegend': False,
+                  'hovermode': 'closest',
+                  'margin': dict(b=20, l=5, r=5, t=40),
+                  'annotations': [dict(
+                         text="No. of connections",
+                         showarrow=False,
+                         xref="paper", yref="paper")],
+                  'xaxis': dict(showgrid=False, zeroline=False,
+                                showticklabels=False),
+                  'yaxis': dict(showgrid=False, zeroline=False,
+                                showticklabels=False)}
+SCATTER_CONFIG = {'mode': 'markers',
+                  'hovertemplate': 'name: %{text}' +
+                                   '<br>publications:%{x}' +
+                                   '<br>citations:%{y}'
+                  }

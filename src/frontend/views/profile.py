@@ -1,41 +1,25 @@
-from backend.facultymember import FacultyMember
-from backend.load import db
-from flask import Blueprint, render_template
-import plotly.offline as py
+from backend import db
 from config import config
+from flask import Blueprint, render_template
 
-import plotly.graph_objects as go
+from frontend.views.plot import Bar
 
 profile_bp = Blueprint('profile_bp', __name__, url_prefix='/profile')
+page = "profile"
 
 
 @profile_bp.route('/<name>')  # name has + for whitespace
 def profile(name):
     rname = name.replace("+", " ")
-    print(f"trying to find {rname}")
     f = db.get_member(rname)
-    print(f"WE GOT {f.name}")
-    plot_cites(f)
     if f is None:
-        print("CANNOT FIND")
         return render_template("404.html")
+    Bar(db).plot(page=page, faculty=f,
+                 filename=config.FCITES_PATH,
+                 **config.BAR_CONFIG)
     return render_template("profile.html", faculty=f)
 
 
 @profile_bp.route('/citesperyear')
 def show_citeframe():
     return render_template('citesperyear.html')
-
-
-def plot_cites(faculty: FacultyMember):
-    fig = go.Figure()
-    fig.add_trace(
-        go.Bar(x=list(faculty.citesperyear.keys()),
-               y=list(faculty.citesperyear.values()))
-                 )
-    fig.update_layout(
-        title="Cites per year",
-        xaxis_title="Year",
-        yaxis_title="No. of citations",)
-
-    py.plot(fig, filename=config.FCITES_PATH, auto_open=False)
