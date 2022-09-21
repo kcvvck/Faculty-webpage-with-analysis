@@ -19,10 +19,26 @@ class Faculty:
                 f"{faculty.name.replace(' ', '+')}"
                 for faculty in self.faculty_list]
 
+    @property
+    def citations(self) -> List[int]:
+        return [faculty.citedby for faculty in self.faculty_list]
+
+    @property
+    def publications(self) -> List[int]:
+        return [len(faculty.publications) for faculty in self.faculty_list]
+
+    @property
+    def faculty(self) -> List[str]:
+        return [faculty.name for faculty in self.faculty_list]
+
+    @property
+    def grants(self) -> List[int]:
+        return [len(faculty.grants) for faculty in self.faculty_list]
+
     def get_member(self, name: str) -> FacultyMember:
         # need to check for exception
-        l = [faculty.name for faculty in self.faculty_list]
-        print(l)
+        # l = [faculty.name for faculty in self.faculty_list]
+        # print(l)
         try:
             member = [faculty for faculty in self.faculty_list
                       if faculty.name == name][0]
@@ -30,6 +46,12 @@ class Faculty:
             logging.error(f"{name} not in faculty list")
             return None
         return member
+
+    def set_pub(self, name1: str, name2: str):
+        member1, member2 = self.get_member(name1), self.get_member(name2)
+        return set(
+                    member1.publications
+                  ).intersection(set(member2.publications))
 
     def filter_authors(self) -> None:
         members = [faculty.name for faculty in self.faculty_list]

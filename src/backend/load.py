@@ -17,6 +17,7 @@ def load_in(dir: str) -> Faculty:
             # -- clean coauthors
             coauthors = [c["name"] for c in info["coauthors"]]
             # -- clean publications
+            # [title, year, citations]
             publications = [
                             [c["bib"]["title"],
                              c["bib"]["pub_year"],

@@ -38,4 +38,11 @@
     <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_network') }}" height="800" id="graphs"></iframe>
     
 </div>
+<div id="scatter-graph">
+    <h2>Bubble chart</h2>
+    <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_scatter') }}" height="800" id="graphs"></iframe>
+    <body>
+        Above graph shows the number of publications vs citations each member of the faculty has. The area of the bubble represents the number of grants the faculty has. 
+    </body>
+</div>
 {% endblock %}

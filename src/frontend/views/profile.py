@@ -38,4 +38,4 @@ def plot_cites(faculty: FacultyMember):
         xaxis_title="Year",
         yaxis_title="No. of citations",)
 
-    py.plot(fig, filename=config.FCITES_GRAPH, auto_open=False)
+    py.plot(fig, filename=config.FCITES_PATH, auto_open=False)
