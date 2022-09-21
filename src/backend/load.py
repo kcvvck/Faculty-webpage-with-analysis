@@ -2,8 +2,8 @@ import json
 import os
 
 from config import config
-from frontend.faculty import Faculty
-from frontend.facultymember import FacultyMember
+from backend.faculty import Faculty
+from backend.facultymember import FacultyMember
 
 
 def load_in(dir: str) -> Faculty:
@@ -17,6 +17,7 @@ def load_in(dir: str) -> Faculty:
             # -- clean coauthors
             coauthors = [c["name"] for c in info["coauthors"]]
             # -- clean publications
+            # [title, year, citations]
             publications = [
                             [c["bib"]["title"],
                              c["bib"]["pub_year"],
@@ -27,20 +28,20 @@ def load_in(dir: str) -> Faculty:
                            ]
             all_members.append(
                 FacultyMember(name=info["name"],
-                              url_picture=info["url_picture"],
+                              urlpicture=info["url_picture"],
                               email=info["ntu_email"],
-                              dr_ntu=info["dr_ntu"],
+                              drntu=info["dr_ntu"],
                               website=info["website"],
                               dblp=info["dblp"],
                               citedby=info["citedby"],
                               biography=info["biography"],
                               interests=info["interests"],
                               grants=info["grants"],
-                              cites_per_year=info["cites_per_year"],
+                              citesperyear=info["cites_per_year"],
                               coauthors=coauthors,
                               publications=publications
                               ))
     return all_members
 
 
-db = load_in(config.DATA_FILE)
+db: Faculty = load_in(config.DATA_FILE)

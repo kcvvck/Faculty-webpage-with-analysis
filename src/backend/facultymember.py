@@ -3,18 +3,18 @@ from typing import Dict, List
 
 
 @dataclass
-class FacultyMember:
+class FacultyMember(dict):
     name: str
-    url_picture: str
+    urlpicture: str
     email: str
-    dr_ntu: str
+    drntu: str
     website: str
     dblp: str
     citedby: str
     biography: str
     interests: List[str]
     grants: List[str]
-    cites_per_year: Dict[str, int]
+    citesperyear: Dict[str, int]
     coauthors: List[str]
     publications: List[str]
 
@@ -22,7 +22,7 @@ class FacultyMember:
         return {
             'name': self.name,
             'email': self.email,
-            'dr_ntu': self.dr_ntu,
+            'dr_ntu': self.drntu,
             'website': self.website,
             'dblp': self.dblp,
             'citations': self.citedby,

@@ -62,8 +62,9 @@ def get_dr_ntu(url):
         dr_info = get_info(dr_site)
         personal_web = dr_info.find_all("div", id=config.WEBSITE)
         biography = dr_info.find_all("div", id="biographyDiv")
-        grants = dr_info.find_all("div", id="currentgrantsDiv")
-        grants_ = grants[0].get_text(separator=';; ').split(";; ")
+        grants_ = dr_info.find_all("div", id="currentgrantsDiv")
+        grants = grants_[0].get_text(separator=';; ').split(";; ")
+        grants = list(filter(None, grants))
         # -----
         time.sleep(10)
         try:
@@ -76,7 +77,8 @@ def get_dr_ntu(url):
                 if personal_web[0].find('a') else None
                     )
             full_info['dblp'] = dblp_site
-            full_info['grants'] = list(filter(None, grants_))
+            full_info['grants'] = list(filter(lambda item: item[0].isalpha(),
+                                              grants))
             full_info['biography'] = biography[0].text
         except StopIteration as e:
             full_info = {

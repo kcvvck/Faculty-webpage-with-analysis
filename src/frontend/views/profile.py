@@ -1,11 +1,25 @@
-from backend.load import db
+from backend import db
+from config import config
 from flask import Blueprint, render_template
 
+from frontend.views.plot import Bar
+
 profile_bp = Blueprint('profile_bp', __name__, url_prefix='/profile')
+page = "profile"
 
 
 @profile_bp.route('/<name>')  # name has + for whitespace
 def profile(name):
     rname = name.replace("+", " ")
     f = db.get_member(rname)
+    if f is None:
+        return render_template("404.html")
+    Bar(db).plot(page=page, faculty=f,
+                 filename=config.FCITES_PATH,
+                 **config.BAR_CONFIG)
     return render_template("profile.html", faculty=f)
+
+
+@profile_bp.route('/citesperyear')
+def show_citeframe():
+    return render_template('citesperyear.html')

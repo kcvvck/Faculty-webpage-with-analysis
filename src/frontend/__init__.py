@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 
-from frontend.views import home, profile
+from frontend.views import home, profile, summary
 
 app = Flask(__name__)
 
@@ -12,3 +12,4 @@ def not_found(error):
 
 app.register_blueprint(home.home_bp)
 app.register_blueprint(profile.profile_bp)
+app.register_blueprint(summary.summary_bp)

@@ -1,9 +1,108 @@
 {% extends "base.html" %}
+<style type="text/css">
+    .links, .links-hyper{
+        white-space: pre-wrap;
+      }
+  </style>
+
 {% block content %}
+    <p> Jump to </p>
+    <a href="#biography">Biography</a>
+    <a href="#interests">Interests</a>
+    <a href="#grants">Grants</a>
+    <a href="#pub">Publications</a>
+    <a href="#citesperyear-graph">Statistics</a>
+    
     <div id="profile-details">
         <h1>{{ faculty.name }}</h1>
     </div>
-    <div class="biography">
-        {{ (faculty.biography) | wordwrap(38) }}
+    <div style="display:inline-block;vertical-align:top;" class="profilepic">
+        <img src={{ faculty.urlpicture }} alt="Image of faculty member"/>
     </div>
+    <div style="display:inline-block;" class="links">
+        <ul>
+            <li style="display:inline-block;" class="links-hyper">
+                <a href={{ faculty.drntu }} style="text-decoration:none; color:#00FFFF;"><h1>DR NTU</h1></a>
+            </li>
+            <li style="display:inline-block;" class="links-hyper">
+                <a href={{ faculty.dblp }} style="text-decoration:none; color:#00FFFF;"><h1>DBLP</h1></a>
+            </li>
+        </ul>
+    </div>
+    <div id="biography">
+        <h2>Biography</h2>
+        <p>
+        {{ (faculty.biography) | wordwrap(48)}}
+        </p>
+    </div>
+    <div id="interests">
+        <h2>Interests</h2>
+        <ul>
+        {% for interest in faculty.interests %}
+            <li>{{ interest }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div id="grants">
+        <h2>Current grants</h2>
+        <ul>
+        {% for grant in faculty.grants %}
+            <li>{{ grant }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div id="pub">
+        <h2>Publications</h2>
+        <table class="table faculty-publications">
+            <thead>
+            <tr>
+                <th>Publication name</th>
+                <th>Year of publish</th>
+                <th>No. citations</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for pub in faculty.publications %}
+                <tr>
+                <td>{{ pub[0] }}</td>
+                <td>{{ pub[1] }}</td>
+                <td>{{ pub[2] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="citesperyear-graph">
+        <h2>Graph of citations per year</h2>
+        <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('profile_bp.show_citeframe') }}" height="800" id="cites-graph"></iframe>
+        <!--iframe tag-->
+      
+        <script>
+            // Selecting the iframe element
+            var frame = document.getElementById("cites-graph");
+            
+            // Adjusting the iframe height onload event
+            frame.onload = function()
+            // function execute while load the iframe
+            {
+            // set the height of the iframe as 
+            // the height of the iframe content
+            frame.style.height = 
+            frame.contentWindow.document.body.scrollHeight + 'px';
+            
+    
+            // set the width of the iframe as the 
+            // width of the iframe content
+            frame.style.width  = 
+            frame.contentWindow.document.body.scrollWidth+'px';
+                
+            }
+            function scrollTo() {
+                selectElement = document.querySelector('#navi');
+                output = selectElement.value;
+                document.getElementById(output).scrollIntoView();
+            }
+            </script>
+    </div>
+
 {% endblock %}
