@@ -1,8 +1,9 @@
+import json
 from backend import db
 from config import config
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, render_template_string
 
-from frontend.views.plot import Bar, Network, Scatter
+from frontend.views.processes import Bar, Network, Scatter
 
 summary_bp = Blueprint('summary_bp', __name__, url_prefix='/summary')
 
@@ -30,7 +31,7 @@ def stats():
     db.filter_authors()
     Network(db).plot(filename=config.NET_PATH, edge_dict=None,
                      **config.NETWORK_CONFIG)
-    Scatter(db).plot(filename=config.SCATTER_PATH,
+    Scatter(db).plot(filename=config.SCATTER_PATH_TOTAL,
                      xaxis_title="Number of publications",
                      yaxis_title="Lifetime citations earned",
                      x=db.publications,
@@ -41,7 +42,21 @@ def stats():
                                  sizeref=2.*max(db.grants)/(40.**2),
                                  sizemin=10),
                      **config.SCATTER_CONFIG)
-    return render_template("summary.html")
+    Scatter(db).plot(filename=config.SCATTER_PATH_QUALITY,
+                     xaxis_title="Number of grants",
+                     yaxis_title="Quality of paper",
+                     x=db.grants,
+                     y=[i / j for i, j in zip(db.citations, db.publications)],
+                     text=db.faculty,
+                     **config.SCATTER_CONFIG)
+    return render_template("summary.html", faculty_list=db)
+
+
+@summary_bp.route("/recommend_me")
+def recommend_me():
+    selected = request.values.get('interest_select')
+    grants = db.recommend_grants(selected)
+    return json.dumps(grants)
 
 
 @summary_bp.route("/total_cites")
@@ -62,3 +77,7 @@ def show_network():
 @summary_bp.route("/scatter_plot")
 def show_scatter():
     return render_template('summary_scatter.html')
+
+@summary_bp.route("/scatter_plot_q")
+def show_scatter_q():
+    return render_template('summary_scatter_q.html')

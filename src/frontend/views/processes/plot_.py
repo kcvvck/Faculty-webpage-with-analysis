@@ -1,6 +1,5 @@
 import datetime
 import logging
-import textwrap
 from collections import OrderedDict
 from dataclasses import dataclass
 
@@ -41,6 +40,9 @@ class Bar(Plot):
 
     def _ipreload(self):
         total_interest = self.db.unique_interest()
+        total_interest = dict(
+            {i: len(total_interest[i]) for i in total_interest.keys()}
+            )
         return total_interest
 
     def plot(self, page=None, faculty=None, filename=None,

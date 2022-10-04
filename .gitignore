@@ -13,3 +13,8 @@ src/frontend/templates/summary_cites.html
 src/frontend/templates/summary_interests.html
 src/frontend/templates/summary_network.html
 src/frontend/templates/summary_scatter.html
+src/backend/__pycache__/faculty.cpython-38.pyc
+src/backend/__pycache__/facultymember.cpython-38.pyc
+src/backend/__pycache__/retrieve.cpython-38.pyc
+src/config/__pycache__/config.cpython-38.pyc
+src/frontend/templates/summary_scatter_q.html

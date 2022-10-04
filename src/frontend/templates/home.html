@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% set active_page = "home" %}
 {% block content %}
-  <h1>List of all NTU SCSE faculty members</h1>
-  <input type="text" placeholder="Search..">
-    <table class="table faculty-list">
+    <table id="table faculty-list">
+      <caption>
+        List of faculty members
+      </caption>
     <thead>
       <tr>
         <th>Name</th>
@@ -11,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for member, link in faculty_list %}
+      {% for member, link in faculty_list%}
         <tr>
           <td><a href={{ link }}>{{ member['name'] }}</a></td>
           <td>{{ member['email'] }}</td>
