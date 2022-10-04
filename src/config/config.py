@@ -13,11 +13,9 @@ ROOT = str(Path().absolute())
 DATA_FILE = ROOT + "/src/backend/data"
 FCITES_PATH = ROOT + '/src/frontend/templates/citesperyear.html'
 TOT_FCITES_PATH = ROOT + '/src/frontend/templates/summary_cites.html'
+TOT_FINTERESTS_PATH = ROOT + '/src/frontend/templates/summary_interests.html'
 NET_PATH = ROOT + '/src/frontend/templates/summary_network.html'
 SCATTER_PATH = ROOT + '/src/frontend/templates/summary_scatter.html'
-BAR_CONFIG = {'title': "Cites per year",
-              'xaxis_title': "Year",
-              'yaxis_title': "No. of citations"}
 EDGE_CONFIG = {'x': [], 'y': [],
                'line': dict(width=0.5, color='#888'),
                'hoverinfo': 'none', 'mode': 'lines'}

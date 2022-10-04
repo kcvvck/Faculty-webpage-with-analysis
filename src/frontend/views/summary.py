@@ -18,11 +18,21 @@ def stats():
     # plot
     Bar(db).plot(page="summary",
                  filename=config.TOT_FCITES_PATH,
-                 **config.BAR_CONFIG)
+                 title="Cites per year",
+                 xaxis_title="Year",
+                 yaxis_title="No. of citations")
+    Bar(db).plot(page="summary",
+                 filename=config.TOT_FINTERESTS_PATH,
+                 type="interests",
+                 title="Interests",
+                 xaxis_title="Type",
+                 yaxis_title="Count")
     db.filter_authors()
-    Network(db).plot(filename=config.NET_PATH, edge_list=None,
+    Network(db).plot(filename=config.NET_PATH, edge_dict=None,
                      **config.NETWORK_CONFIG)
     Scatter(db).plot(filename=config.SCATTER_PATH,
+                     xaxis_title="Number of publications",
+                     yaxis_title="Lifetime citations earned",
                      x=db.publications,
                      y=db.citations,
                      text=db.faculty,
@@ -37,6 +47,11 @@ def stats():
 @summary_bp.route("/total_cites")
 def show_totalcites():
     return render_template('summary_cites.html')
+
+
+@summary_bp.route("/total_interests")
+def show_totalinterests():
+    return render_template('summary_interests.html')
 
 
 @summary_bp.route("/network")

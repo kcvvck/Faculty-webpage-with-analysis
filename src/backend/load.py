@@ -25,6 +25,9 @@ def load_in(dir: str) -> Faculty:
                             for c in info["publications"]
                             if c["num_citations"] > 0
                             and "pub_year" in c["bib"]
+                            and c["bib"]["title"].encode(
+                                'ascii', errors='ignore'
+                                )
                            ]
             all_members.append(
                 FacultyMember(name=info["name"],

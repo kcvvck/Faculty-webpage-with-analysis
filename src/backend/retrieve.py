@@ -39,12 +39,10 @@ class Retrieve:
 
 
 def get_dr_ntu(url):
-    count = 0
     all_info = get_info(url)
     faculty_list = all_info.find("table", attrs={"class": "table table-hover"})
     faculty_data = faculty_list.find_all("tr")
     for data in tqdm(faculty_data[1:]):
-        count = count + 1
         name = data.find('a').text
         email = data.find_all("td")[2].text
         if name in config.AKA.keys():
@@ -53,7 +51,7 @@ def get_dr_ntu(url):
         try:
             dblp_: str = dblp.search(name)[0].homepages[0]
             dblp_site = dblp_.replace("homepages",
-                                      "https://dblp.org/pid") + ".html"
+                                    "https://dblp.org/pid") + ".html"
         except IndexError as e:
             dblp_site = None
             continue
@@ -62,9 +60,12 @@ def get_dr_ntu(url):
         dr_info = get_info(dr_site)
         personal_web = dr_info.find_all("div", id=config.WEBSITE)
         biography = dr_info.find_all("div", id="biographyDiv")
-        grants_ = dr_info.find_all("div", id="currentgrantsDiv")
-        grants = grants_[0].get_text(separator=';; ').split(";; ")
-        grants = list(filter(None, grants))
+        try:
+            grants_ = dr_info.find_all("div", id="currentgrantsDiv")
+            grants = grants_[0].get_text(separator=';; ').split(";; ")
+            grants = list(filter(None, grants))
+        except IndexError as e:
+            grants = []  # no grants
         # -----
         time.sleep(10)
         try:
@@ -78,7 +79,7 @@ def get_dr_ntu(url):
                     )
             full_info['dblp'] = dblp_site
             full_info['grants'] = list(filter(lambda item: item[0].isalpha(),
-                                              grants))
+                                            grants))
             full_info['biography'] = biography[0].text
         except StopIteration as e:
             full_info = {
@@ -87,7 +88,7 @@ def get_dr_ntu(url):
             }
             logging.error(f"Could not find {name} in google scholar!")
             pass
-        with open(f'data/{name.replace(" ", "_")}.json', 'w+') as out_file:
+        with open(f'src/backend/data/{name.replace(" ", "_")}.json', 'w') as out_file:
             out_file.write(json.dumps(full_info))
-        if count == 2:
-            break
+        # if count == 2:
+        #     break

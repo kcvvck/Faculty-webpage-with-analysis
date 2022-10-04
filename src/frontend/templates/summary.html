@@ -33,6 +33,10 @@
     <h2>Cites per year graph</h2>
     <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_totalcites') }}" height="800" id="graphs"></iframe>
 </div>
+<div id="interest-graph">
+    <h2>Interests of faculty</h2>
+    <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_totalinterests') }}" height="800" id="graphs"></iframe>
+</div>
 <div id="network-graph">
     <h2>Network graph</h2>
     <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_network') }}" height="800" id="graphs"></iframe>

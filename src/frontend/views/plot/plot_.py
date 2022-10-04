@@ -1,5 +1,6 @@
 import datetime
 import logging
+import textwrap
 from collections import OrderedDict
 from dataclasses import dataclass
 
@@ -24,7 +25,7 @@ class Plot:
 
 @dataclass
 class Bar(Plot):
-    def _spreload(self):
+    def _cpreload(self):
         total_cites = {k: 0 for k in years}
         for f in self.db.faculty_list:
             cpy = f.citesperyear
@@ -34,13 +35,21 @@ class Bar(Plot):
                             })
         total_cites = OrderedDict(sorted(total_cites.items()))
         if all(i == 0 for i in list(total_cites.values())):
-            logging.error("Dictionary cannot be updated")
+            logging.error("Dictionary of cites cannot be updated")
         else:
             return total_cites
 
-    def plot(self, page=None, faculty=None, filename=None, **kwargs):
+    def _ipreload(self):
+        total_interest = self.db.unique_interest()
+        return total_interest
+
+    def plot(self, page=None, faculty=None, filename=None,
+             type="cites", **kwargs):
         if page == 'summary':
-            data = self._spreload()
+            if type == "interests":
+                data = self._ipreload()
+            else:
+                data = self._cpreload()
         elif page == 'profile':
             data = faculty.citesperyear
         else:
@@ -56,18 +65,18 @@ class Bar(Plot):
 
 @dataclass
 class Network(Plot):
-    def plot(self, filename=None, edge_list=None, **kwargs):
+    def plot(self, filename=None, edge_dict=None, **kwargs):
         xtextpos = []
         ytextpos = []
         edgepos = []
         G = nx.Graph()
-        if not edge_list:
-            edge_list = self.create_edge()
+        if not edge_dict:
+            edge_dict = self.create_edge()
         # add nodes and edges
         for member in self.db.faculty_list:
             G.add_node(member.name, data=member)
-        for edge in edge_list:
-            G.add_edge(*edge, weight=edge_list[edge])
+        for edge in edge_dict:
+            G.add_edge(*edge, weight=edge_dict[edge])
         # referred from:
         # https://www.kaggle.com/code/anand0427/network-graph-with-at-t-data-using-plotly/notebook
         pos = nx.spring_layout(G, k=0.5, iterations=50)
@@ -83,10 +92,17 @@ class Network(Plot):
             edge_trace['y'] += tuple([y0, y1, None])
             xtextpos.append((x0+x1)/2)
             ytextpos.append((y0+y1)/2)
-            edgepos.append(self.db.set_pub(edge[0], edge[1]))
+            same_pub = self.db.set_pub(edge[0], edge[1])
+            # Found that some coauthors, even though are listed,
+            # do not have the same publications
+            # on their google scholar
+            edgepos.append(('<br>'.join(same_pub) if same_pub
+                            else "No information"))
         # add interactive weight trace
+        # edgetext = str(edgepos)[2:-2].replace(', ', '<br>')
         eweights_trace = go.Scatter(x=xtextpos, y=ytextpos,
-                                    text=edgepos, **config.WEIGHT_CONFIG)
+                                    text=edgepos,
+                                    **config.WEIGHT_CONFIG)
         # add attributes to nodes
         for node in G.nodes():
             x, y = G.nodes[node]['pos']
@@ -118,7 +134,11 @@ class Network(Plot):
 
 @dataclass
 class Scatter(Plot):
-    def plot(self, filename=None, **kwargs):
+    def plot(self, filename=None,
+             xaxis_title=None, yaxis_title=None, **kwargs):
         fig = go.Figure()
         fig.add_trace(go.Scatter(**kwargs))
+        fig.update_layout(xaxis_title=xaxis_title,
+                          yaxis_title=yaxis_title,
+                          width=1000)
         fig.write_html(filename)

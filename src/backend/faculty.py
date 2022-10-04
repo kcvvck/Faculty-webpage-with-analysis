@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 import logging
-from typing import List
+from typing import Dict, List, Set
 
 import pandas as pd
 
@@ -10,6 +10,7 @@ from .facultymember import FacultyMember
 @dataclass
 class Faculty:
     faculty_list: List[FacultyMember] = field(default_factory=list)
+    u_interest: List[str] = field(default_factory=list)
 
     def append(self, faculty_member: FacultyMember):
         self.faculty_list.append(faculty_member)
@@ -35,10 +36,28 @@ class Faculty:
     def grants(self) -> List[int]:
         return [len(faculty.grants) for faculty in self.faculty_list]
 
+    def unique_interest(self) -> Dict[str, int]:
+        interest = {}
+        for f in self.faculty_list:
+            for i in f.interests:
+                if i in interest:
+                    interest[i] += 1
+                else:
+                    interest[i] = 1
+        self.u_interest = interest
+        return interest
+
+    def recommend_grants(self, interest_list) -> List[str]:
+        avail_grants = set()
+        if not self.u_interest:
+            self.u_interest = self.unique_interest()
+        for i in interest_list:
+            fmembers = self.u_interest.get(i)
+            grants = set((g for f in fmembers for g in f.grants))
+            avail_grants.update(grants)
+        return list(avail_grants)
+
     def get_member(self, name: str) -> FacultyMember:
-        # need to check for exception
-        # l = [faculty.name for faculty in self.faculty_list]
-        # print(l)
         try:
             member = [faculty for faculty in self.faculty_list
                       if faculty.name == name][0]
@@ -47,11 +66,11 @@ class Faculty:
             return None
         return member
 
-    def set_pub(self, name1: str, name2: str):
+    def set_pub(self, name1: str, name2: str) -> Set[str]:
         member1, member2 = self.get_member(name1), self.get_member(name2)
         return set(
-                    member1.publications
-                  ).intersection(set(member2.publications))
+                    member1.published()
+                  ).intersection(set(member2.published()))
 
     def filter_authors(self) -> None:
         members = [faculty.name for faculty in self.faculty_list]
