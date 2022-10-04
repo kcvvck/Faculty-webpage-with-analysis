@@ -32,6 +32,7 @@ def stats():
     Network(db).plot(filename=config.NET_PATH, edge_dict=None,
                      **config.NETWORK_CONFIG)
     Scatter(db).plot(filename=config.SCATTER_PATH_TOTAL,
+                     title_text="Lifetime citations of every faculty against publications",
                      xaxis_title="Number of publications",
                      yaxis_title="Lifetime citations earned",
                      x=db.publications,
@@ -43,6 +44,7 @@ def stats():
                                  sizemin=10),
                      **config.SCATTER_CONFIG)
     Scatter(db).plot(filename=config.SCATTER_PATH_QUALITY,
+                     title_text="Quality of paper against grants received",
                      xaxis_title="Number of grants",
                      yaxis_title="Quality of paper",
                      x=db.grants,

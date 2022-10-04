@@ -1,3 +1,30 @@
+/* General */
+table{
+  margin-left:auto; 
+  margin-right:auto;
+  table-layout: auto;
+  border-collapse: collapse;
+  }
+
+th, td {
+  border: 1px solid #999;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+caption {
+  text-align: center;
+  font-size: 30px;
+  padding-bottom: 10px;
+}
+
+div {
+  text-align: center;
+}
+
+h2 {
+  font-size: 30px;
+}
 
 /* Home page */
 
@@ -34,25 +61,6 @@
   color: rgb(255, 255, 255);
 }
 
-table{
-  margin-left:auto; 
-  margin-right:auto;
-  table-layout: auto;
-  border-collapse: collapse;
-  }
-
-th, td {
-  border: 1px solid #999;
-  padding: 0.5rem;
-  text-align: left;
-}
-
-caption {
-  text-align: center;
-  font-size: 30px;
-  padding-bottom: 10px;
-}
-
 /* Profile page */
 
 .navigation {
@@ -66,17 +74,9 @@ caption {
   line-height: 10px;
 }
 
-div {
-  text-align: center;
-}
-
 .faculty-img {
   border: 5px solid #555;
   border-image: linear-gradient(#0012b1, #db5252) 30;
-}
-
-h2 {
-  font-size: 20px;
 }
 
 .float-container {
@@ -88,75 +88,47 @@ h2 {
   margin-left: auto;
   margin-right: auto;
   padding: 20px;
-}  
-
-/* #header-links {
-  font-size: 20px;
-} */
-
-
-
-
-/* .navigator-container {
-    margin: 100px;
-    padding:50px;
-    align-content: center;
-  } */
-
-/* Add a black background color to the top navigation */
-/* .topnav {
-    position: relative;
-    background-color: #333;
-    overflow: hidden;
-  } */
-  
-/* Style the links inside the navigation bar */
-/* .topnav a {
-float: left;
-color: #f2f2f2;
-text-align: center;
-padding: 14px 16px;
-text-decoration: none;
-font-size: 17px;
-} */
-
-/* Change the color of links on hover */
-/* .topnav a:hover {
-background-color: #ddd;
-color: black;
-} */
-
-/* Add a color to the active/current link */
-/* .topnav a.active {
-background-color: #04AA6D;
-color: white;
-} */
-
-/* Centered section inside the top navigation */
-/* .topnav-centered a {
-float: none;
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-} */
-
-/* Right-aligned section inside the top navigation */
-/* .topnav-right {
-float: right;
-} */
-
-/* Responsive navigation menu - display links on top of each other instead of next to each other (for mobile devices) */
-/* @media screen and (max-width: 600px) {
-.topnav a, .topnav-right {
-    float: none;
-    display: block;
-} */
-
-/* .topnav-centered a {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: none;
 }
-} */
+
+/* Summary */
+
+iframe {
+  min-height: 1000px;
+  width: 100%;
+  display: block;
+  border:none;
+}
+
+.right {
+  float: right;
+  width: 50%;
+}
+
+.left {
+  float: left;
+  width: 50%;
+}
+
+.explanation {
+  margin-top: 100px;
+  padding-top: 50%;
+  font-size: 20px;
+}
+
+.form-inline {
+  margin-top:100px;
+}
+
+.input-group-addon {
+  font-size: 20px;
+}
+
+button {
+  background-color: #0429a0;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}

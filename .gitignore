@@ -18,3 +18,8 @@ src/backend/__pycache__/facultymember.cpython-38.pyc
 src/backend/__pycache__/retrieve.cpython-38.pyc
 src/config/__pycache__/config.cpython-38.pyc
 src/frontend/templates/summary_scatter_q.html
+src/backend/__pycache__/__init__.cpython-38.pyc
+src/backend/__pycache__/faculty.cpython-38.pyc
+src/backend/__pycache__/facultymember.cpython-38.pyc
+src/backend/__pycache__/retrieve.cpython-38.pyc
+src/config/__pycache__/config.cpython-38.pyc

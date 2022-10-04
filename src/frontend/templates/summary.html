@@ -1,29 +1,43 @@
 {% extends "base.html" %}
-<!--iframe tag-->
 {% block content %}
 <div id="cites-graph">
-    <h2>Cites per year graph</h2>
-    <iframe src="{{ url_for('summary_bp.show_totalcites') }}" height="800" id="graphs"></iframe>
+    <div class="graphs">
+        <h2>Cites per year graph</h2>
+        <iframe src="{{ url_for('summary_bp.show_totalcites') }}"></iframe>
+    </div>
 </div>
+
 <div id="interest-graph">
-    <h2>Interests of faculty</h2>
-    <iframe src="{{ url_for('summary_bp.show_totalinterests') }}" height="800" id="graphs"></iframe>
+    <div class="graphs">
+        <h2>Interests of faculty</h2>
+        <iframe src="{{ url_for('summary_bp.show_totalinterests') }}"></iframe>
+    </div>
 </div>
+
 <div id="network-graph">
-    <h2>Network graph</h2>
-    <iframe src="{{ url_for('summary_bp.show_network') }}" height="800" id="graphs"></iframe>
-    
+    <div class="graphs">
+        <h2>Network graph</h2>
+        <iframe src="{{ url_for('summary_bp.show_network') }}"></iframe>
+    </div>
 </div>
+
 <div id="scatter-graph">
-    <h2>Bubble chart</h2>
-    <iframe src="{{ url_for('summary_bp.show_scatter') }}" height="800" id="graphs" align="left"></iframe>
-    <iframe src="{{ url_for('summary_bp.show_scatter_q') }}" height="800" id="graphs" align="right"></iframe>
-    <body>
-        Above graph shows the number of publications vs citations each member of the faculty has. The area of the bubble represents the number of grants the faculty has. 
-    </body>
+    <div class="graphs">
+        <h2>Bubble chart</h2>
+        <div class="left">
+            <iframe src="{{ url_for('summary_bp.show_scatter') }}" align="left"></iframe>
+        </div>
+        <div class="right">
+            <iframe src="{{ url_for('summary_bp.show_scatter_q') }}" align="right"></iframe>
+        </div>
+    </div>
+</div>
+<div class="explanation">
+    Above graph shows the number of publications vs citations each member of the faculty has. The area of the bubble represents the number of grants the faculty has. 
 </div>
 <!-- referred from https://stackoverflow.com/a/32020159-->
 <form class="form-inline" method="GET" action="{{ url_for('summary_bp.recommend_me') }}">
+    <h2>Recommend grants based on interest</h2>
     <div class="form-group">
       <div class="input-group">
           <span class="input-group-addon">Please select your interest</span>
@@ -32,8 +46,9 @@
                 <option value="{{ i }}">{{ i }}</option>
                 {% endfor %}
               </select>
+          <button type="submit" class="btn btn-default">Go</button>
       </div>
-      <button type="submit" class="btn btn-default">Go</button>
+      
     </div>
   </form>
 {% endblock %}
