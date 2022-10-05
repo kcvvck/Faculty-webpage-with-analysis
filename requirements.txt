@@ -1,14 +1,12 @@
-$ python -m pip install requests
-pip install beautifulsoup4
-pip install validators
-pip install pandas
-pip install lxml
-pip install git+https://github.com/scholrly/dblp-python # NOTE in line 21 of __init__.py file, remove ", key"
-pip install regex
-pip install scholarly
-pip install tqdm
-pip install Flask
-pip install plotly
-pip install chart-studio
-pip install networkx
-pip install pyvis
+requests == 2.28.1
+beautifulsoup4 == 4.11.1
+validators == 0.20.0
+pandas == 1.4.3
+lxml == 4.9.1
+git+https://github.com/scholrly/dblp-python # NOTE in line 21 of __init__.py file, remove ", key"
+regex == 2022.7.25
+scholarly == 1.7.2
+tqdm == 4.64.0
+Flask == 2.2.2
+plotly == 5.10.0
+networkx == 2.8.6
