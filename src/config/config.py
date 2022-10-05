@@ -15,7 +15,8 @@ FCITES_PATH = ROOT + '/src/frontend/templates/citesperyear.html'
 TOT_FCITES_PATH = ROOT + '/src/frontend/templates/summary_cites.html'
 TOT_FINTERESTS_PATH = ROOT + '/src/frontend/templates/summary_interests.html'
 NET_PATH = ROOT + '/src/frontend/templates/summary_network.html'
-SCATTER_PATH = ROOT + '/src/frontend/templates/summary_scatter.html'
+SCATTER_PATH_TOTAL = ROOT + '/src/frontend/templates/summary_scatter.html'
+SCATTER_PATH_QUALITY = ROOT + '/src/frontend/templates/summary_scatter_q.html'
 EDGE_CONFIG = {'x': [], 'y': [],
                'line': dict(width=0.5, color='#888'),
                'hoverinfo': 'none', 'mode': 'lines'}
@@ -56,6 +57,6 @@ NETWORK_CONFIG = {'title': 'NTU SCSE Research Network',
                                 showticklabels=False)}
 SCATTER_CONFIG = {'mode': 'markers',
                   'hovertemplate': 'name: %{text}' +
-                                   '<br>publications:%{x}' +
-                                   '<br>citations:%{y}'
+                                   '<br>x:%{x}' +
+                                   '<br>y:%{y}'
                   }

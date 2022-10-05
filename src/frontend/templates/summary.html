@@ -1,52 +1,54 @@
 {% extends "base.html" %}
-<!--iframe tag-->
-{% block html_head %}
-<script>
-    // Selecting the iframe element
-    var frame = document.getElementById("graphs");
-    
-    // Adjusting the iframe height onload event
-    frame.onload = function()
-    // function execute while load the iframe
-    {
-    // set the height of the iframe as 
-    // the height of the iframe content
-    frame.style.height = 
-    frame.contentWindow.document.body.scrollHeight + 'px';
-    
-
-    // set the width of the iframe as the 
-    // width of the iframe content
-    frame.style.width  = 
-    frame.contentWindow.document.body.scrollWidth+'px';
-        
-    }
-    function scrollTo() {
-        selectElement = document.querySelector('#navi');
-        output = selectElement.value;
-        document.getElementById(output).scrollIntoView();
-    }
-    </script>
-    {% endblock %}
 {% block content %}
 <div id="cites-graph">
-    <h2>Cites per year graph</h2>
-    <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_totalcites') }}" height="800" id="graphs"></iframe>
+    <div class="graphs">
+        <h2>Cites per year graph</h2>
+        <iframe src="{{ url_for('summary_bp.show_totalcites') }}"></iframe>
+    </div>
 </div>
+
 <div id="interest-graph">
-    <h2>Interests of faculty</h2>
-    <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_totalinterests') }}" height="800" id="graphs"></iframe>
+    <div class="graphs">
+        <h2>Interests of faculty</h2>
+        <iframe src="{{ url_for('summary_bp.show_totalinterests') }}"></iframe>
+    </div>
 </div>
+
 <div id="network-graph">
-    <h2>Network graph</h2>
-    <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_network') }}" height="800" id="graphs"></iframe>
-    
+    <div class="graphs">
+        <h2>Network graph</h2>
+        <iframe src="{{ url_for('summary_bp.show_network') }}"></iframe>
+    </div>
 </div>
+
 <div id="scatter-graph">
-    <h2>Bubble chart</h2>
-    <iframe style="width: 100%;border:3px solid black; " src="{{ url_for('summary_bp.show_scatter') }}" height="800" id="graphs"></iframe>
-    <body>
-        Above graph shows the number of publications vs citations each member of the faculty has. The area of the bubble represents the number of grants the faculty has. 
-    </body>
+    <div class="graphs">
+        <h2>Bubble chart</h2>
+        <div class="left">
+            <iframe src="{{ url_for('summary_bp.show_scatter') }}" align="left"></iframe>
+        </div>
+        <div class="right">
+            <iframe src="{{ url_for('summary_bp.show_scatter_q') }}" align="right"></iframe>
+        </div>
+    </div>
 </div>
+<div class="explanation">
+    Above graph shows the number of publications vs citations each member of the faculty has. The area of the bubble represents the number of grants the faculty has. 
+</div>
+<!-- referred from https://stackoverflow.com/a/32020159-->
+<form class="form-inline" method="GET" action="{{ url_for('summary_bp.recommend_me') }}">
+    <h2>Recommend grants based on interest</h2>
+    <div class="form-group">
+      <div class="input-group">
+          <span class="input-group-addon">Please select your interest</span>
+              <select name="interest_select" class="selectpicker form-control">
+                {% for i in faculty_list.interests %}
+                <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+              </select>
+          <button type="submit" class="btn btn-default">Go</button>
+      </div>
+      
+    </div>
+  </form>
 {% endblock %}

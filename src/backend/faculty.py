@@ -10,7 +10,7 @@ from .facultymember import FacultyMember
 @dataclass
 class Faculty:
     faculty_list: List[FacultyMember] = field(default_factory=list)
-    u_interest: List[str] = field(default_factory=list)
+    # u_interest: List[str] = field(default_factory=list)
 
     def append(self, faculty_member: FacultyMember):
         self.faculty_list.append(faculty_member)
@@ -36,26 +36,30 @@ class Faculty:
     def grants(self) -> List[int]:
         return [len(faculty.grants) for faculty in self.faculty_list]
 
-    def unique_interest(self) -> Dict[str, int]:
-        interest = {}
+    @property
+    def interests(self) -> List[str]:
+        return set((i for f in self.faculty_list for i in f.interests))
+
+    def unique_interest(self) -> Dict[str, FacultyMember]:
+        # print("wewqeqw")
+        interest = {k: [] for k in self.interests}
         for f in self.faculty_list:
             for i in f.interests:
                 if i in interest:
-                    interest[i] += 1
-                else:
-                    interest[i] = 1
-        self.u_interest = interest
+                    temp = interest.get(i)
+                    temp.append(f)
+                    interest[i] = temp
         return interest
 
-    def recommend_grants(self, interest_list) -> List[str]:
-        avail_grants = set()
-        if not self.u_interest:
-            self.u_interest = self.unique_interest()
-        for i in interest_list:
-            fmembers = self.u_interest.get(i)
-            grants = set((g for f in fmembers for g in f.grants))
-            avail_grants.update(grants)
-        return list(avail_grants)
+    def recommend_grants(self, interest: str) -> List[str]:
+        # print("RUNNIdsdasdadasdasdadasdNG&")
+        # avail_grants = set()
+        interests = self.unique_interest()
+        # for i in interest_list:
+        fmembers = interests.get(interest)
+        grants = set((g for f in fmembers for g in f.grants))
+        # avail_grants.update(grants)
+        return list(grants)
 
     def get_member(self, name: str) -> FacultyMember:
         try:

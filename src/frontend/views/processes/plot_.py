@@ -1,6 +1,5 @@
 import datetime
 import logging
-import textwrap
 from collections import OrderedDict
 from dataclasses import dataclass
 
@@ -41,6 +40,9 @@ class Bar(Plot):
 
     def _ipreload(self):
         total_interest = self.db.unique_interest()
+        total_interest = dict(
+            {i: len(total_interest[i]) for i in total_interest.keys()}
+            )
         return total_interest
 
     def plot(self, page=None, faculty=None, filename=None,
@@ -134,11 +136,12 @@ class Network(Plot):
 
 @dataclass
 class Scatter(Plot):
-    def plot(self, filename=None,
+    def plot(self, filename=None, title_text=None,
              xaxis_title=None, yaxis_title=None, **kwargs):
         fig = go.Figure()
         fig.add_trace(go.Scatter(**kwargs))
-        fig.update_layout(xaxis_title=xaxis_title,
+        fig.update_layout(title_text=title_text,
+                          xaxis_title=xaxis_title,
                           yaxis_title=yaxis_title,
                           width=1000)
         fig.write_html(filename)
