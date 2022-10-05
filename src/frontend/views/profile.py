@@ -2,7 +2,7 @@ from backend import db
 from config import config
 from flask import Blueprint, render_template
 
-from frontend.views.plot import Bar
+from frontend.views.processes import Bar
 
 profile_bp = Blueprint('profile_bp', __name__, url_prefix='/profile')
 page = "profile"
@@ -16,7 +16,8 @@ def profile(name):
         return render_template("404.html")
     Bar(db).plot(page=page, faculty=f,
                  filename=config.FCITES_PATH,
-                 **config.BAR_CONFIG)
+                 xaxis_title="Year",
+                 yaxis_title="No. of citations")
     return render_template("profile.html", faculty=f)
 
 
