@@ -13,3 +13,4 @@ src/frontend/templates/summary_cites.html
 src/frontend/templates/summary_interests.html
 src/frontend/templates/summary_network.html
 src/frontend/templates/summary_scatter.html
+src/frontend/templates/summary_scatter_q.html
