@@ -2,11 +2,13 @@ import datetime
 import logging
 from collections import OrderedDict
 from dataclasses import dataclass
+from typing import Dict
 
 import networkx as nx
 import plotly.graph_objects as go
 import plotly.offline as py
 from backend import Faculty
+from backend.facultymember import FacultyMember
 from config import config
 
 year = datetime.datetime.today().year
@@ -15,15 +17,21 @@ years = list(range(year, year - 30))
 
 @dataclass
 class Plot:
+    '''
+    Parent class: ensures all plot objects have plot method
+    '''
     db: Faculty
 
-    def plot(self, filename=None, **kwargs):
+    def plot(self, filename: str = None, **kwargs):
         if not filename:
             return None
 
 
 @dataclass
 class Bar(Plot):
+    '''
+    configurations for bar plots
+    '''
     def _cpreload(self):
         total_cites = {k: 0 for k in years}
         for f in self.db.faculty_list:
@@ -45,8 +53,15 @@ class Bar(Plot):
             )
         return total_interest
 
-    def plot(self, page=None, faculty=None, filename=None,
-             type="cites", **kwargs):
+    def plot(self, page: str = None,
+             faculty: FacultyMember = None,
+             filename: str = None,
+             type: str = "cites",
+             **kwargs):
+        '''
+        Plot bar plots for different pages as
+        they have different configurations
+        '''
         if page == 'summary':
             if type == "interests":
                 data = self._ipreload()
@@ -64,10 +79,19 @@ class Bar(Plot):
         fig.update_layout(**kwargs)
         py.plot(fig, filename=filename, auto_open=False)
 
+# Network referred from:
+# https://towardsdatascience.com/visualizing-networks-in-python-d70f4cbeb259
+# https://www.kaggle.com/code/anand0427/network-graph-with-at-t-data-using-plotly/notebook
+
 
 @dataclass
 class Network(Plot):
-    def plot(self, filename=None, edge_dict=None, **kwargs):
+    def plot(self, filename: str = None,
+             edge_dict: Dict[str, str] = None,
+             **kwargs):
+        '''
+        Plot Network graph
+        '''
         xtextpos = []
         ytextpos = []
         edgepos = []
@@ -79,8 +103,6 @@ class Network(Plot):
             G.add_node(member.name, data=member)
         for edge in edge_dict:
             G.add_edge(*edge, weight=edge_dict[edge])
-        # referred from:
-        # https://www.kaggle.com/code/anand0427/network-graph-with-at-t-data-using-plotly/notebook
         pos = nx.spring_layout(G, k=0.5, iterations=50)
         for n, p in pos.items():
             G.nodes[n]['pos'] = p
@@ -130,14 +152,20 @@ class Network(Plot):
         edge_dict = {i: edge_list_.count(i) for i in edge_list_}
         # get similar publications
         edge_list_ = set(edge_list_)
-        # similarpubs = {i: db.set_pub(i[0], i[1]) for i in edge_list_}
-        return edge_dict  # , similarpubs
+        return edge_dict
 
 
 @dataclass
 class Scatter(Plot):
-    def plot(self, filename=None, title_text=None,
-             xaxis_title=None, yaxis_title=None, **kwargs):
+    def plot(self, filename: str = None,
+             title_text: str = None,
+             xaxis_title: str = None,
+             yaxis_title: str = None,
+             **kwargs):
+        '''
+        Plot scatter plots for different pages as
+        they have different configurations
+        '''
         fig = go.Figure()
         fig.add_trace(go.Scatter(**kwargs))
         fig.update_layout(title_text=title_text,

@@ -2,6 +2,7 @@ import json
 import os
 
 from config import config
+
 from backend.faculty import Faculty
 from backend.facultymember import FacultyMember
 
@@ -30,6 +31,7 @@ def load_in(dir: str) -> Faculty:
                                     'ascii', errors='ignore'
                                     )
                             ]
+                # -- append as objects
                 all_members.append(
                     FacultyMember(name=info["name"],
                                   urlpicture=info["url_picture"],
@@ -46,6 +48,7 @@ def load_in(dir: str) -> Faculty:
                                   publications=publications
                                   ))
             except Exception as e:
+                # -- if information not fully retrieved
                 all_members.append(
                     FacultyMember(name=info["name"],
                                   email=info["ntu_email"],

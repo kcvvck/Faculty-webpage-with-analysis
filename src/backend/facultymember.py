@@ -15,7 +15,7 @@ class FacultyMember(dict):
     website: str = None
     dblp: str = None
     citedby: str = None
-    biography: str = None
+    biography: str = field(default="")
     interests: List[str] = field(default_factory=list)
     grants: List[str] = field(default_factory=list)
     citesperyear: Dict[str, int] = field(default_factory=lambda: defaultdict(dict))

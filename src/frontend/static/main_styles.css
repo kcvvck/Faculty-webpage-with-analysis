@@ -26,6 +26,23 @@ h2 {
   font-size: 30px;
 }
 
+iframe {
+  min-height: 1000px;
+  width: 100%;
+  display: block;
+  border:none;
+}
+
+button {
+  background-color: #0429a0;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
 /* Home page */
 
 .divider-space {
@@ -63,6 +80,10 @@ h2 {
 
 /* Profile page */
 
+.links, .links-hyper{
+  white-space: pre-wrap;
+}
+
 .navigation {
   font-size: 20px;
   text-align: center;
@@ -92,13 +113,6 @@ h2 {
 
 /* Summary */
 
-iframe {
-  min-height: 1000px;
-  width: 100%;
-  display: block;
-  border:none;
-}
-
 .right {
   float: right;
   width: 50%;
@@ -121,14 +135,4 @@ iframe {
 
 .input-group-addon {
   font-size: 20px;
-}
-
-button {
-  background-color: #0429a0;
-  border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
 }
