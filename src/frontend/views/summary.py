@@ -1,8 +1,8 @@
 import json
+
 from backend import db
 from config import config
-from flask import Blueprint, render_template, request, render_template_string
-
+from flask import Blueprint, render_template, request
 from frontend.views.processes import Bar, Network, Scatter
 
 summary_bp = Blueprint('summary_bp', __name__, url_prefix='/summary')
@@ -10,13 +10,12 @@ summary_bp = Blueprint('summary_bp', __name__, url_prefix='/summary')
 
 @summary_bp.route("/")
 def stats():
-    # total cites
-    # network
-    # 1. remove co author if not in faculty
-    # 2. create n^2 graph or relations (edges)
-    # steps referred from:
-    # https://towardsdatascience.com/visualizing-networks-in-python-d70f4cbeb259
-    # plot
+    '''
+    summary page for stats containing:
+    1. 2 Bars (total cites over years, count of interests)
+    2. 1 Network (who worked with who on what reserach paper? NTU only)
+    3. 2 Scatter (citations per publications, quality of paper vs grants)
+    '''
     Bar(db).plot(page="summary",
                  filename=config.TOT_FCITES_PATH,
                  title="Cites per year",
@@ -28,6 +27,7 @@ def stats():
                  title="Interests",
                  xaxis_title="Type",
                  yaxis_title="Count")
+    # remove non NTU coauthors
     db.filter_authors()
     Network(db).plot(filename=config.NET_PATH, edge_dict=None,
                      **config.NETWORK_CONFIG)
@@ -56,6 +56,9 @@ def stats():
 
 @summary_bp.route("/recommend_me")
 def recommend_me():
+    '''
+    recommends grants based on interest
+    '''
     selected = request.values.get('interest_select')
     grants = db.recommend_grants(selected)
     return json.dumps(grants)
@@ -63,23 +66,39 @@ def recommend_me():
 
 @summary_bp.route("/total_cites")
 def show_totalcites():
+    '''
+    renders total citations plot
+    '''
     return render_template('summary_cites.html')
 
 
 @summary_bp.route("/total_interests")
 def show_totalinterests():
+    '''
+    renders total interests plot
+    '''
     return render_template('summary_interests.html')
 
 
 @summary_bp.route("/network")
 def show_network():
+    '''
+    renders network
+    '''
     return render_template('summary_network.html')
 
 
 @summary_bp.route("/scatter_plot")
 def show_scatter():
+    '''
+    renders bubble chart of citations per publications vs grants
+    '''
     return render_template('summary_scatter.html')
+
 
 @summary_bp.route("/scatter_plot_q")
 def show_scatter_q():
+    '''
+    renders quality of papers scatter plot
+    '''
     return render_template('summary_scatter_q.html')

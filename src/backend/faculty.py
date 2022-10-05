@@ -1,8 +1,6 @@
-from dataclasses import dataclass, field
 import logging
+from dataclasses import dataclass, field
 from typing import Dict, List, Set
-
-import pandas as pd
 
 from .facultymember import FacultyMember
 
@@ -10,40 +8,70 @@ from .facultymember import FacultyMember
 @dataclass
 class Faculty:
     faculty_list: List[FacultyMember] = field(default_factory=list)
-    # u_interest: List[str] = field(default_factory=list)
 
     def append(self, faculty_member: FacultyMember):
+        '''
+        Appends a single instance of faculty member to
+        list of faculty
+        '''
         self.faculty_list.append(faculty_member)
 
     def links(self) -> List[str]:
+        '''
+        returns the url of a single faculty member's profile
+        '''
         return ["http://127.0.0.1:5000/profile/" +
                 f"{faculty.name.replace(' ', '+')}"
                 for faculty in self.faculty_list]
 
     @property
     def citations(self) -> List[int]:
+        '''
+        returns the number of citations of faculty members in the form:
+        [citedby1: int, ...]
+        '''
         return [faculty.citedby for faculty in self.faculty_list]
 
     @property
     def publications(self) -> List[int]:
+        '''
+        returns length of publications of faculty members in the form:
+        [len(pub1): int, ...]
+        '''
         return [len(faculty.publications) for faculty in self.faculty_list]
 
     @property
     def faculty(self) -> List[str]:
+        '''
+        returns name of all faculty members in the form:
+        [name1: str, ...]
+        '''
         return [faculty.name for faculty in self.faculty_list]
 
     @property
     def grants(self) -> List[int]:
+        '''
+        returns number of grants of all faculty members in the form:
+        [no_grants1: int, ...]
+        '''
         return [len(faculty.grants) for faculty in self.faculty_list]
 
     @property
     def interests(self) -> List[str]:
-        return set((i for f in self.faculty_list for i in f.interests))
+        '''
+        returns list of all unique interests of faculty members
+        '''
+        return list(set((i for f in self.faculty_list for i in f.interests)))
 
-    def unique_interest(self) -> Dict[str, FacultyMember]:
-        # print("wewqeqw")
+    def unique_interest(self) -> Dict[str, List[FacultyMember]]:
+        '''
+        returns dictionary in the form of
+        {"edge ai": [FacultyMember(Tim), ...], ...}
+        '''
         interest = {k: [] for k in self.interests}
+        # loop through all faculty member
         for f in self.faculty_list:
+            # loop through all interests
             for i in f.interests:
                 if i in interest:
                     temp = interest.get(i)
@@ -52,16 +80,18 @@ class Faculty:
         return interest
 
     def recommend_grants(self, interest: str) -> List[str]:
-        # print("RUNNIdsdasdadasdasdadasdNG&")
-        # avail_grants = set()
+        '''
+        recommend grants based on faculty member sharing interests
+        '''
         interests = self.unique_interest()
-        # for i in interest_list:
         fmembers = interests.get(interest)
         grants = set((g for f in fmembers for g in f.grants))
-        # avail_grants.update(grants)
         return list(grants)
 
     def get_member(self, name: str) -> FacultyMember:
+        '''
+        get FacultyMember object using name
+        '''
         try:
             member = [faculty for faculty in self.faculty_list
                       if faculty.name == name][0]
@@ -71,21 +101,29 @@ class Faculty:
         return member
 
     def set_pub(self, name1: str, name2: str) -> Set[str]:
+        '''
+        returns common publications between 2 faculty members, given name.
+        '''
         member1, member2 = self.get_member(name1), self.get_member(name2)
         return set(
                     member1.published()
                   ).intersection(set(member2.published()))
 
     def filter_authors(self) -> None:
+        '''
+        remove co-authors not in NTU
+        '''
         members = [faculty.name for faculty in self.faculty_list]
         remove = []
+        # loop through all faculty members
         for f in self.faculty_list:
+            # loop through their coauthors
             for coauthor in f.coauthors:
                 if coauthor not in members:
                     remove.append(coauthor)
             f.coauthors = [x for x in f.coauthors if x not in remove]
 
-    def to_dataframe(self):
-        return pd.DataFrame.from_records([
-            member.to_dict() for member in self.faculty_list
-                                         ])
+    # def to_dataframe(self):
+    #     return pd.DataFrame.from_records([
+    #         member.to_dict() for member in self.faculty_list
+    #                                      ])
