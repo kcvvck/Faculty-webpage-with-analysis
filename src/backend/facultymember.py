@@ -1,42 +1,35 @@
-from dataclasses import dataclass
+from collections import defaultdict
+from dataclasses import dataclass, field
 from typing import Dict, List
 
 
 @dataclass
 class FacultyMember(dict):
+    '''
+    Class for faculty member object
+    '''
     name: str
-    urlpicture: str
     email: str
-    drntu: str
-    website: str
-    dblp: str
-    citedby: str
-    biography: str
-    interests: List[str]
-    grants: List[str]
-    citesperyear: Dict[str, int]
-    coauthors: List[str]
-    publications: List[str]
+    urlpicture: str = None
+    drntu: str = None
+    website: str = None
+    dblp: str = None
+    citedby: str = None
+    biography: str = None
+    interests: List[str] = field(default_factory=list)
+    grants: List[str] = field(default_factory=list)
+    citesperyear: Dict[str, int] = field(default_factory=lambda: defaultdict(dict))
+    coauthors: List[str] = field(default_factory=list)
+    publications: List[str] = field(default_factory=list)
 
     def __post_init__(self):
+        '''
+        Converts all interests strings to lower
+        '''
         self.interests = [i.lower() for i in self.interests]
 
-    def to_dict(self) -> dict:
-        return {
-            'name': self.name,
-            'email': self.email,
-            'dr_ntu': self.drntu,
-            'website': self.website,
-            'dblp': self.dblp,
-            'citations': self.citedby,
-            'biography': self.biography,
-            'research_interests': self.interests,
-            'grants': self.grants
-        }
-
     def published(self) -> List[str]:
-        return [info[0] for info in self.publications]
-
-    def interest_check(self, interest: str) -> bool:
-        if interest in self.interests:
-            return True
+        '''
+        returns name of all publications
+        '''
+        return [pubs[0] for pubs in self.publications]

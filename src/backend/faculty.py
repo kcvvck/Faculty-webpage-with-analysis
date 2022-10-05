@@ -1,5 +1,5 @@
-from dataclasses import dataclass, field
 import logging
+from dataclasses import dataclass, field
 from typing import Dict, List, Set
 
 import pandas as pd
@@ -13,27 +13,50 @@ class Faculty:
     u_interest: List[str] = field(default_factory=list)
 
     def append(self, faculty_member: FacultyMember):
+        '''
+        Appends a single instance of faculty member to
+        list of faculty
+        '''
         self.faculty_list.append(faculty_member)
 
     def links(self) -> List[str]:
+        '''
+        returns the url of a single faculty member's profile
+        '''
         return ["http://127.0.0.1:5000/profile/" +
                 f"{faculty.name.replace(' ', '+')}"
                 for faculty in self.faculty_list]
 
     @property
     def citations(self) -> List[int]:
+        '''
+        returns the number of citations of faculty members in the form:
+        [citedby1: int, ...]
+        '''
         return [faculty.citedby for faculty in self.faculty_list]
 
     @property
     def publications(self) -> List[int]:
+        '''
+        returns length of publications of faculty members in the form:
+        [len(pub1): int, ...]
+        '''
         return [len(faculty.publications) for faculty in self.faculty_list]
 
     @property
     def faculty(self) -> List[str]:
+        '''
+        returns name of all faculty members in the form:
+        [name1: str, ...]
+        '''
         return [faculty.name for faculty in self.faculty_list]
 
     @property
     def grants(self) -> List[int]:
+        '''
+        returns number of grants of all faculty members in the form:
+        [no_grants1: int, ...]
+        '''
         return [len(faculty.grants) for faculty in self.faculty_list]
 
     def unique_interest(self) -> Dict[str, int]:
