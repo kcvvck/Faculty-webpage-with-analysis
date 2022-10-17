@@ -100,7 +100,9 @@ def get_dr_ntu(url):
         except StopIteration as e:
             full_info = {
                 "name": name,
-                "ntu_email": email
+                "ntu_email": email,
+                "citedby": 0,
+                "publications": []
             }
             logging.error(f"Could not find {name} in google scholar!")
             pass

@@ -1,11 +1,19 @@
 import json
+import pickle
 
-from backend import db
+from backend import Faculty
 from config import config
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from frontend.views.processes import Bar, Network, Scatter
 
 summary_bp = Blueprint('summary_bp', __name__, url_prefix='/summary')
+
+# get all objects
+with open(config.SAVED_FILE, 'rb') as inp:
+    s = pickle.load(inp)
+
+db = Faculty()
+db.extend(s)
 
 
 @summary_bp.route("/")
@@ -25,8 +33,9 @@ def stats():
                  filename=config.TOT_FINTERESTS_PATH,
                  type="interests",
                  title="Interests",
-                 xaxis_title="Type",
-                 yaxis_title="Count")
+                 xaxis_title="Count",
+                 yaxis_title="Type",
+                 height=2000)
     # remove non NTU coauthors
     db.filter_authors()
     Network(db).plot(filename=config.NET_PATH, edge_dict=None,
@@ -48,7 +57,8 @@ def stats():
                      xaxis_title="Number of grants",
                      yaxis_title="Quality of paper",
                      x=db.grants,
-                     y=[i / j for i, j in zip(db.citations, db.publications)],
+                     y=[i / j for i, j in zip(db.citations, db.publications)
+                        if j != 0],
                      text=db.faculty,
                      **config.SCATTER_CONFIG)
     return render_template("summary.html", faculty_list=db)
@@ -61,7 +71,7 @@ def recommend_me():
     '''
     selected = request.values.get('interest_select')
     grants = db.recommend_grants(selected)
-    return json.dumps(grants)
+    return jsonify(grants)
 
 
 @summary_bp.route("/total_cites")

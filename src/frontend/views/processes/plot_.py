@@ -1,5 +1,6 @@
 import datetime
 import logging
+import operator
 from collections import OrderedDict
 from dataclasses import dataclass
 from typing import Dict
@@ -32,7 +33,14 @@ class Bar(Plot):
     '''
     configurations for bar plots
     '''
-    def _cpreload(self):
+    def _cpreload(self) -> Dict[int, int]:
+        """
+        citations graph in the form
+        {
+            "year1": "citation1",
+            ...
+        }
+        """
         total_cites = {k: 0 for k in years}
         for f in self.db.faculty_list:
             cpy = f.citesperyear
@@ -46,7 +54,13 @@ class Bar(Plot):
         else:
             return total_cites
 
-    def _ipreload(self):
+    def _ipreload(self) -> Dict[str, int]:
+        """
+        interests graph in the form
+        {
+            "interest": count
+        }
+        """
         total_interest = self.db.unique_interest()
         total_interest = dict(
             {i: len(total_interest[i]) for i in total_interest.keys()}
@@ -72,19 +86,38 @@ class Bar(Plot):
         else:
             return None
         fig = go.Figure()
-        fig.add_trace(
-            go.Bar(x=list(data.keys()),
-                   y=list(data.values()))
-                    )
+        # get key of max value for highlighting bar
+        max_key = max(data.items(), key=operator.itemgetter(1))[0]
+        # interest bar configurations
+        if type == "interests":
+            data = dict(sorted(data.items(), key=operator.itemgetter(1)))
+            max_list = [config.DEFAULT_COL if i != max_key
+                        else config.MAX_COLOR for i in data.keys()]
+            fig.add_trace(
+                go.Bar(x=list(data.values()),
+                       y=list(data.keys()),
+                       orientation="h",
+                       text=list(data.values()),
+                       textposition="outside",
+                       marker=dict(color=max_list))
+                        )
+        # citations bar configurations
+        else:
+            max_list = [config.DEFAULT_COL if i != max_key
+                        else config.MAX_COLOR for i in data.keys()]
+            fig.add_trace(
+                go.Bar(x=list(data.keys()),
+                       y=list(data.values()),
+                       marker=dict(color=max_list))
+                        )
         fig.update_layout(**kwargs)
         py.plot(fig, filename=filename, auto_open=False)
 
+
+@dataclass
 # Network referred from:
 # https://towardsdatascience.com/visualizing-networks-in-python-d70f4cbeb259
 # https://www.kaggle.com/code/anand0427/network-graph-with-at-t-data-using-plotly/notebook
-
-
-@dataclass
 class Network(Plot):
     def plot(self, filename: str = None,
              edge_dict: Dict[str, str] = None,
