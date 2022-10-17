@@ -1,4 +1,3 @@
-src/backend/data
 __pycache__/
 src/unknown_persons.txt
 src/backend/__pycache__/__init__.cpython-38.pyc
