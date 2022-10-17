@@ -11,6 +11,7 @@ AKA = {"Jagath Chandana Rajapakse": "Jagath C. Rajapakse",
        }
 ROOT = str(Path().absolute())
 DATA_FILE = ROOT + "/src/backend/data"
+SAVED_FILE = ROOT + "/src/backend/data/faculty.pkl"
 FCITES_PATH = ROOT + '/src/frontend/templates/citesperyear.html'
 TOT_FCITES_PATH = ROOT + '/src/frontend/templates/summary_cites.html'
 TOT_FINTERESTS_PATH = ROOT + '/src/frontend/templates/summary_interests.html'
@@ -60,3 +61,5 @@ SCATTER_CONFIG = {'mode': 'markers',
                                    '<br>x:%{x}' +
                                    '<br>y:%{y}'
                   }
+DEFAULT_COL = "#fd8d3c"
+MAX_COLOR = "#b10026"

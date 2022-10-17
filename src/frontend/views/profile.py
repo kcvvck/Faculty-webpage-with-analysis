@@ -1,10 +1,19 @@
-from backend import db
+import pickle
+
+from backend import Faculty
 from config import config
 from flask import Blueprint, render_template
 from frontend.views.processes import Bar
 
 profile_bp = Blueprint('profile_bp', __name__, url_prefix='/profile')
 page = "profile"
+
+# get all objects
+with open(config.SAVED_FILE, 'rb') as inp:
+    s = pickle.load(inp)
+
+db = Faculty()
+db.extend(s)
 
 
 @profile_bp.route('/<name>')  # name has + for whitespace

@@ -1,7 +1,17 @@
-from backend.load import db
+import pickle
+
+from backend import Faculty
+from config import config
 from flask import Blueprint, render_template
 
 home_bp = Blueprint('home_bp', __name__)
+
+# get all objects
+with open(config.SAVED_FILE, 'rb') as inp:
+    s = pickle.load(inp)
+
+db = Faculty()
+db.extend(s)
 
 
 @home_bp.route('/')
