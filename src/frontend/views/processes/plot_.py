@@ -65,7 +65,8 @@ class Bar(Plot):
         total_interest = dict(
             {i: len(total_interest[i]) for i in total_interest.keys()}
             )
-        return total_interest
+        updated = {k: v for k, v in total_interest.items() if v > 1}
+        return updated
 
     def plot(self, page: str = None,
              faculty: FacultyMember = None,
@@ -201,8 +202,35 @@ class Scatter(Plot):
         '''
         fig = go.Figure()
         fig.add_trace(go.Scatter(**kwargs))
-        fig.update_layout(title_text=title_text,
-                          xaxis_title=xaxis_title,
-                          yaxis_title=yaxis_title,
-                          width=1000)
+        if title_text == "Lifetime citations of every faculty against publications":
+            shapes = []
+            colors = ["#f0f9e8", "#bae4bc", "#7bccc4", "#2b8cbe"]
+            start_coord = [(0.5, 0), (0, 0), (0.5, 0.5), (0, 0.5)]
+            end_coord = [(1, 0.5), (0.5, 0.5), (1, 1), (0.5, 1)]
+            for idx, i in enumerate(colors):
+                shapes.append(dict(type="rect",
+                                   xref="paper",
+                                   yref="paper",
+                                   x0=start_coord[idx][0],
+                                   y0=start_coord[idx][1],
+                                   x1=end_coord[idx][0],
+                                   y1=end_coord[idx][1],
+                                   fillcolor=i,
+                                   opacity=0.5,
+                                   layer="below",
+                                   line_width=0
+                                   ))
+            fig.update_layout(title_text=title_text,
+                              xaxis_title=xaxis_title,
+                              yaxis_title=yaxis_title,
+                              width=800,
+                              shapes=shapes)
+            fig.update_xaxes(showgrid=False)
+            fig.update_yaxes(showgrid=False)
+        else:
+            fig.update_layout(title_text=title_text,
+                              xaxis_title=xaxis_title,
+                              yaxis_title=yaxis_title,
+                              width=800)
+
         fig.write_html(filename)

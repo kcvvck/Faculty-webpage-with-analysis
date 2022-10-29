@@ -35,7 +35,9 @@ def stats():
                  title="Interests",
                  xaxis_title="Count",
                  yaxis_title="Type",
-                 height=2000)
+                 height=1000,
+                 width=1000,
+                 bargap=0.2)
     # remove non NTU coauthors
     db.filter_authors()
     Network(db).plot(filename=config.NET_PATH, edge_dict=None,

@@ -33,7 +33,6 @@ class Faculty:
         returns the number of citations of faculty members in the form:
         [citedby1: int, ...]
         '''
-        print([faculty.citedby for faculty in self.faculty_list])
         return [faculty.citedby for faculty in self.faculty_list]
 
     @property
