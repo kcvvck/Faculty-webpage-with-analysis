@@ -20,4 +20,6 @@ In terminal use the code
 ## Running the webpages
 In terminal use the code
 `python -m flask run`
+OR
+Run source file `app.py`
 
