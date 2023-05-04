@@ -7,7 +7,7 @@ git+https://github.com/scholrly/dblp-python # NOTE in line 21 of __init__.py fil
 regex == 2022.7.25
 scholarly == 1.7.2
 tqdm == 4.64.0
-Flask == 2.2.2
+Flask == 2.2.5
 plotly == 5.10.0
 networkx == 2.8.6
 Flask-WTF == 1.0.1
